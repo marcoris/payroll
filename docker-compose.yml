@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    networks:
+      - payroll
+    ports:
+      - "3306:3306"
+    command: >
+      bash -c "
+      chmod 644 /etc/mysql/conf.d/*.cnf
+      && /entrypoint.sh mysqld
+      "
+    volumes:
+      - "./mysql/docker.cnf:/etc/mysql/conf.d/docker.cnf"
+    restart: always
+    environment:
+      MYSQL_DATABASE: payroll
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+networks:
+  payroll:
+    driver: bridge
